@@ -3,6 +3,11 @@
 !01_data/*sh
 !01_data/**/*sh
 
+# Ignore output folder, except for script files
+04_output
+!04_output/*sh
+!04_output/**/*sh
+
 # Nextflow files
 work
 .nextflow*
