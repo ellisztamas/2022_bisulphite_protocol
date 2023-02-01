@@ -8,6 +8,7 @@ class BismarkSam(object):
         """
         if read[13][:5] != "XM:Z:":
             raise ValueError("Element 13 of this read is not an XM tag. This read does not appear to be a Bismark-sorted SAM file.")
+        self.id = read[0]
         self.chr = read[2]
         self.length = len(read[9])
         self.xm_tag = self.trim_XM_tag(read[13][5:])
@@ -45,6 +46,8 @@ class BismarkSam(object):
         flag = False
         index = 0
         n = len(self.xm_tag)
+        
+        # Check for clusters in reads with two or more cytosines.
         while index < n:
             if self.xm_tag[index].isupper():
                 if (flag == True) :

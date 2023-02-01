@@ -15,5 +15,6 @@ dependencies:
   - fastq-screen
   - picard
   - pip
+  - samtools
   - pip:
     - biopython
