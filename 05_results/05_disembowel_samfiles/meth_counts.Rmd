@@ -1,0 +1,115 @@
+---
+title: "Clustering of methylated cytosines within reads"
+format: html
+editor: visual
+---
+
+I suspect that high conversion rates arise because with a low probability strands get damaged and are repaired in the presence of methylated dNTPs. That causes the read to have a whole string of methylated cytosines that are *next to one another*.
+
+I want to get a distribution of numbers of methylated cytosines on each read and quantify how often those methylated cytosines are found as a cluster. I systematically went through 4 aligned BAM files and counted how many methylated cytosines were on each, and how often those cytosines cluster into a contiguous string.
+
+```{r setup}
+#| echo: false
+
+library(tidyverse)
+library(ggpubr)
+
+# Glob paths to methylation count files.
+meth_count_files <- Sys.glob('05_results/05_disembowel_samfiles/meth_counts/*tsv')
+
+# Import a list of five files
+mc <- lapply(
+  meth_count_files,
+  read_tsv, show_col_types = FALSE
+)
+
+```
+
+This figure shows how often cytosines are clustered on a read for four files. This is for reads with at least two methylated cytosines only. Note that coverage on the vector DNA is so low as to be meaningless here. About 20% of reads on autosomes have clustered cytosines, but a much higher proportion on the chloroplast. 
+
+```{r}
+#| echo: false
+
+# Calculate the proportion of reads on each chromosome where methylated cytosines
+# occur in an unbroken string.
+# This is done only for reads with at least two methylated cytosines.
+clusters_by_chromosome <- function(meth_count){
+  meth_count %>% 
+    group_by(chr) %>% 
+    summarise(
+      n = n(),
+      mean = mean(is_cluster, na.rm=TRUE),
+      se = (mean * (1-mean)) / sqrt(n),
+      upper = mean + se,
+      lower = mean - se
+    ) %>% 
+    ggplot( aes(x = chr, y = mean)) +
+    geom_point() +
+    geom_errorbar(aes(ymin = lower, ymax = upper), width = 0) +
+    labs(
+      x = "Chromosome",
+      y = "Reads where mC cluster"
+    ) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1)
+    )
+}
+# plot it
+ggarrange( plotlist = lapply(mc, clusters_by_chromosome))
+```
+
+This figure shows the distribution of reads with clusters or no clusters of methylated cytosines over reads of different lengths. It shows Chr2 as representative for all autosomes, because they look very similar. There is a clear peak of clustered reads to the right of each subplot, showing that weird reads tend to be the maximum fragment length.
+
+```{r}
+# Function to plot the relationship between read length and metylation level
+length_vs_mC <- function(meth_count){
+  meth_count %>% 
+    filter( 
+      complete.cases(.),
+      chr %in% c("Chr2", "ChrC")
+    ) %>% 
+    ggplot( aes( x = total, y = mC, colour = is_cluster)) +
+    geom_point() +
+    labs(
+      x = "Read length",
+      y = "Methylated cytosines",
+      colour = "mC cluster"
+    ) +
+    theme_bw() +
+    facet_grid(~chr)
+}
+# Plot for each file.
+# There is a peak on the right of reads with 
+ggarrange( plotlist = lapply(mc, length_vs_mC), nrow = length(meth_count_files), common.legend = TRUE)
+```
+
+This plot shows the probability of mCs being clustered as a function of the total number of mCs. For autosomes, more methylated reads are more likely to show clustering. On the chloroplast, there is no consistent relationship.
+
+```{r}
+
+cluster_over_length <- function(meth_count){
+  meth_count %>% 
+    filter( 
+      complete.cases(.),
+      chr %in% c("Chr2", "ChrC")
+    ) %>% 
+    # mutate(
+    #   mC = mC / (uC + mC)
+    # ) %>% 
+    group_by(mC, chr) %>% 
+    summarise(
+      cl = mean(is_cluster),
+      n = n()
+    ) %>% 
+    ggplot( aes( x=mC, y=cl )) +
+    geom_point() +
+    labs(
+      x = "Number mC"
+    ) +
+    facet_grid(~chr)
+}
+
+ggarrange( plotlist = lapply(mc, cluster_over_length), nrow = 4, common.legend = TRUE)
+
+```
+
