@@ -11,6 +11,8 @@ args = parser.parse_args()
 
 # Import samfile line by line
 reads = [line.split("\t") for line in open(args.input, "r").read().split("\n")]
+print(args.input)
+print("File has {} lines".format( len(reads)) )
 # Pull out header information
 header = [read for read in reads if read[0].startswith('@')]
 header = ['\t'.join(read) + '\n' for read in header]
@@ -24,6 +26,9 @@ outfile_discard = open(args.discard, 'w')
 outfile_keep.writelines(header)
 outfile_discard.writelines(header)
 
+n_mate_pairs = 0
+n_pairs_kept = 0
+n_pairs_discarded = 0
 # Loop over the remaining reads in pairs.
 for i in range(0, len(reads), 2 ):
     mate1 = BismarkSam(reads[i])
@@ -42,14 +47,23 @@ for i in range(0, len(reads), 2 ):
     else:
         keep2 = not mate2.mC_cluster()
     
+
     # If both reads are good, write to the keep file
     if keep1 & keep2:
         outfile_keep.write( '\t'.join(reads[i]  ) + '\n')
         outfile_keep.write( '\t'.join(reads[i+1]) + '\n')
+        n_pairs_kept += 1
     # If either is bad, discard them both
     else:
-        outfile_discard.write( '\t'.join(reads[i]  ) )
-        outfile_discard.write( '\t'.join(reads[i+1]) )
+        outfile_discard.write( '\t'.join(reads[i]  ) + '\n')
+        outfile_discard.write( '\t'.join(reads[i+1]) + '\n')
+        n_pairs_discarded += 1
+
+    n_mate_pairs += 1
 
 outfile_keep.close()
 outfile_discard.close()
+
+print("{} mates pairs processed.".format(n_mate_pairs) )
+print("{} pairs kept.".format(n_pairs_kept) )
+print("{} pairs discarded.".format(n_pairs_discarded) )

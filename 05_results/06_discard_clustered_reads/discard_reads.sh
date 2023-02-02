@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --qos=rapid
 #SBATCH --time=30:00
-#SBATCH --mem=10gb
+#SBATCH --mem=50gb
 #SBATCH --array=0-4
 #SBATCH --output=./slurm/discard_reads.%J.out
 #SBATCH --error=./slurm/discard_reads.%J.err
@@ -22,7 +22,7 @@ bamfile=${files[$SLURM_ARRAY_TASK_ID]}
 # Output
 mkdir -p $dir/samfiles
 samfile=`basename ${bamfile/.deduplicated.bam/.sam}`
-# Conversion
+# BAM to SAM Conversion
 samtools view -f 0x2 -h $bamfile > $dir/samfiles/$samfile
 
 # Split reads based on whether they have cluster of cytosines or not
@@ -35,8 +35,6 @@ python $dir/discard_clustered_reads.py \
 --input $dir/samfiles/$samfile \
 --keep $dir/cleaned_samfiles/$samfile \
 --discard $dir/filtered_reads/$samfile
-# Remove the intermediate SAM file
-rm $dir/samfiles/$samfile
 
 # Extract methylation on each read
 bismark_methylation_extractor \
@@ -61,6 +59,19 @@ $dir/bismark_meths/$covfile \
 --dir 05_results/06_discard_clustered_reads/bismark_meths/ \
 -o $outfile
 
+# Create and index sorted BAM files you can view in IGV
+mkdir -p $dir/sorted_bams
+sortedfile=`basename ${bamfile/.deduplicated.bam/.sorted.bam}`
+samtools view -S -h -b $dir/cleaned_samfiles/$samfile | samtools sort -m 100M -o $dir/sorted_bams/$sortedfile
+samtools index -b $dir/sorted_bams/$sortedfile -o $dir/sorted_bams/$sortedfile.bai
+
+mkdir -p $dir/sorted_bams_discard
+samtools view -S -h -b $dir/filtered_reads/$samfile | samtools sort -m 100M -o $dir/sorted_bams_discard/$sortedfile
+samtools index -b $dir/sorted_bams_discard/$sortedfile -o $dir/sorted_bams_discard/$sortedfile.bai
+
+
+# Remove the intermediate SAM file
+rm $dir/samfiles/$samfile
 rm $dir/cleaned_samfiles/$samfile
 rm $dir/filtered_reads/$samfile
 rm $dir/bismark_meths/*txt

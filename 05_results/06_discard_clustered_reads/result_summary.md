@@ -23,6 +23,8 @@ pair has a string of contiguous mC and keep if neither does.
 - See `conversion_rates.csv` for the output
 - Also applied the conversion-rate script to the output `04_output/three_prime_15/` and 
     `04_output/wgbs_paired/`.
+- I visually compared sorted bam files for cleaned vs discarded reads, and they
+    show the pattern you would expect.
 
 ## Main conclusion
 
@@ -31,6 +33,8 @@ Trimming reads with contiguous cytosines brings non-conversion rates down from
 
 ## Caveats
 There is quite a bit of variation between samples, and I only ran it on five files.
+
+Methylation levels on the other chromosomes goes *up* from ~8% to ~25%
 
 ## Follow-up
 Compare with data from the old protocol
