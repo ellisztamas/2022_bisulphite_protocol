@@ -4,7 +4,7 @@
 #SBATCH --ntasks-per-node=8
 #SBATCH --time=1:00:00
 #SBATCH --mem=20gb
-#SBATCH --output=./slurm/which_read_fails.py.%J.out
+#SBATCH --output=./slurm/which_read_fails.py.%a.out
 #SBATCH --error=./slurm/which_read_fails.%J.err
 
 conda activate pybshap

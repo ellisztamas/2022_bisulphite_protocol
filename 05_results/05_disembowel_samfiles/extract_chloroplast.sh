@@ -7,8 +7,8 @@
 #SBATCH --ntasks-per-node=8
 #SBATCH --qos=rapid
 #SBATCH --mem=10gb
-#SBATCH --output=./slurm/extract_chloroplast.%J.out
-#SBATCH --error=./slurm/extract_chloroplast.%J.err
+#SBATCH --output=./slurm/extract_chloroplast.%a.out
+#SBATCH --error=./slurm/extract_chloroplast.%a.err
 
 module load build-env/f2022
 module load samtools/1.15-gcc-11.2.0

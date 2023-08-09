@@ -4,8 +4,8 @@
 #SBATCH --ntasks-per-node=8
 #SBATCH --time=1:00:00
 #SBATCH --mem=10gb
-#SBATCH --output=./slurm/SAMtools.%J.out
-#SBATCH --error=./slurm/SAMtools.%J.err
+#SBATCH --output=./slurm/SAMtools.%a.out
+#SBATCH --error=./slurm/SAMtools.%a.err
 
 module load build-env/f2022
 module load samtools/1.15-gcc-11.2.0

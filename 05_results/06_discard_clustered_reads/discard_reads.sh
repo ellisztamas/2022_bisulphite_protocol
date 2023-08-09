@@ -5,8 +5,8 @@
 #SBATCH --time=30:00
 #SBATCH --mem=50gb
 #SBATCH --array=0-4
-#SBATCH --output=./slurm/discard_reads.%J.out
-#SBATCH --error=./slurm/discard_reads.%J.err
+#SBATCH --output=./slurm/discard_reads.%a.out
+#SBATCH --error=./slurm/discard_reads.%a.err
 
 module load anaconda3/2019.03
 source $EBROOTANACONDA3/etc/profile.d/conda.sh
@@ -31,7 +31,7 @@ export PYTHONPATH="/groups/nordborg/projects/epiclines/006.quality_control/01_20
 mkdir -p $dir/cleaned_samfiles
 mkdir -p $dir/filtered_reads
 # Run the script
-python $dir/discard_clustered_reads.py \
+python 02_library/python/discard_clustered_reads.py \
 --input $dir/samfiles/$samfile \
 --keep $dir/cleaned_samfiles/$samfile \
 --discard $dir/filtered_reads/$samfile
@@ -72,6 +72,6 @@ samtools index -b $dir/sorted_bams_discard/$sortedfile -o $dir/sorted_bams_disca
 
 # Remove the intermediate SAM file
 rm $dir/samfiles/$samfile
-rm $dir/cleaned_samfiles/$samfile
-rm $dir/filtered_reads/$samfile
+# rm $dir/cleaned_samfiles/$samfile
+# rm $dir/filtered_reads/$samfile
 rm $dir/bismark_meths/*txt

@@ -5,8 +5,8 @@
 #SBATCH --time=10:00
 #SBATCH --mem=10gb
 #SBATCH --array=0-4
-#SBATCH --output=./slurm/conversion_rates.%J.out
-#SBATCH --error=./slurm/conversion_rates.%J.err
+#SBATCH --output=./slurm/conversion_rates.%a.out
+#SBATCH --error=./slurm/conversion_rates.%a.err
 
 module load anaconda3/2019.03
 source $EBROOTANACONDA3/etc/profile.d/conda.sh

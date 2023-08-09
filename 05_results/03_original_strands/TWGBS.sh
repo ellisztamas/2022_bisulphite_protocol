@@ -3,8 +3,8 @@
 #SBATCH --nodes=1
 #SBATCH --time=1:00:00
 #SBATCH --mem=10gb
-#SBATCH --output=./slurm/original_strand.py.%J.out
-#SBATCH --error=./slurm/original_strand.%J.err
+#SBATCH --output=./slurm/original_strand.py.%a.out
+#SBATCH --error=./slurm/original_strand.%a.err
 
 module load anaconda3/2019.03
 source $EBROOTANACONDA3/etc/profile.d/conda.sh

@@ -108,11 +108,29 @@ nextflow run 02_library/nextflow_pipelines/nf_bisulfite_WGBS \
 # An example from Rahul's data
 # Doesn't work.
 nextflow run 02_library/nextflow_pipelines/nf_bisulfite_WGBS \
---input_files "01_data/01_old_protocol/HHHY7DSX2_2#169198_ACTCGCTAAAGGAGTA.fastq" \
+--input_files "01_data/01_old_protocol/HY5W7DMXX*.fastq" \
 --fasta 01_data/03_reference_genome/TAIR10_wholeGenome_withVectors.fasta \
 --outdir 04_output/old_protocol \
---trim_galore_args="--clip_r1 15 --three_prime_clip_R1 15" \
---bismark_args="--score_min L,0,0.5" \
---single_end = true \
+--trim_galore_args="--clip_r1 15 --clip_r2_15 --three_prime_clip_R1 15 --three_prime_clip_R2 15" \
+--bismark_args=" --non_directional --score_min L,0,0.5" \
 -with-conda = true
 # -w /scratch-cbe/users/thomas.ellis
+
+# Run this on pentuple mutants that shouldn't have any DNA at all
+nextflow run 02_library/nextflow_pipelines/nf_bisulfite_WGBS \
+--input_files "/scratch-cbe/users/thomas.ellis/pentuple_mutant/000000000-GDJK9_0_R14404_20221025/demultiplexed/211006/*_R{1,2}_*.fastq.gz" \
+--fasta 01_data/03_reference_genome/TAIR10_wholeGenome_withVectors.fasta \
+--outdir 04_output/mutants \
+--trim_galore_args="--clip_r1 15 --clip_r2 15 --three_prime_clip_R1 15 --three_prime_clip_R2 15" \
+--bismark_args="--score_min L,0,0.5 --non_directional" \
+-with-conda = true 
+
+# Accession 9601 sequenced at high coverage
+nextflow run 02_library/nextflow_pipelines/nf_bisulfite_WGBS \
+--input_files "/scratch-cbe/users/thomas.ellis/05_col0_flies/9601/*_R{1,2}_*.fastq.gz" \
+--fasta 01_data/08_9601/9601_plus_vectors.fasta \
+--outdir 04_output/30x_9601 \
+--trim_galore_args="--clip_r1 15 --clip_r2 15" \
+--bismark_args="--score_min L,0,0.5" \
+-with-conda = true \
+-w /scratch-cbe/users/thomas.ellis/05_col0_flies/9601/work

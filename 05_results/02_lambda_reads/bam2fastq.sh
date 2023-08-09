@@ -4,8 +4,8 @@
 #SBATCH --ntasks-per-node=8
 #SBATCH --time=1:00:00
 #SBATCH --mem=10gb
-#SBATCH --output=slurm/bamtofastq.%J.out
-#SBATCH --error=slurm/bamtofastq.%J.err
+#SBATCH --output=slurm/bamtofastq.%a.out
+#SBATCH --error=slurm/bamtofastq.%a.err
 
 module load build-env/2020
 module load bedtools/2.27.1-foss-2018b

@@ -4,8 +4,8 @@
 #SBATCH --qos=rapid
 #SBATCH --mem=10gb
 #SBATCH --array=0-3
-#SBATCH --output=./slurm/meth_counts.%J.out
-#SBATCH --error=./slurm/meth_counts.%J.err
+#SBATCH --output=./slurm/meth_counts.%a.out
+#SBATCH --error=./slurm/meth_counts.%a.err
 
 # Convert files from BAM to SAM
 module load build-env/f2022

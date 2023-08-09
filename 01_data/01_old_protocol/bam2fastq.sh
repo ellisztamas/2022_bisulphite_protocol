@@ -7,37 +7,23 @@
 #SBATCH --mem=5GB
 #SBATCH --output=slurm/bam2fastqc.%J.out
 #SBATCH --error=slurm/bam2fastqc.%J.err
-#SBATCH --qos=medium
-#SBATCH --time=1:00:00
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
+#SBATCH --qos=rapid
+#SBATCH --time=10:00
+#SBATCH --array=0-4
 
 ml build-env/f2021
 ml bedtools/2.30.0-gcc-10.2.0
-# ml build-env/f2022
-# ml samtools/1.15-gcc-11.2.0
 
-indir=/resources/ngs/nordborg/12091
+indir=/groups/nordborg/projects/epiclines/003.dogging_expt/001.data/003.sequencing/mergeAP
+files=($indir/*bam)
+infile=${files[$SLURM_ARRAY_TASK_ID]}
+
 outdir=01_data/01_old_protocol
+outfile=`basename ${infile/.bam/.fastq}`
 
-# FILES=($indir/*bam)
-# infile=$FILES[${SLURM_ARRAY_TASK_ID}]
-
-# filename=`basename $infile`
-# # outfile=$outdir/${filename%.*}.fastq
-
-# echo $infile
-# echo $filename
-# echo $outfile
+echo $infile
+echo $outfile
 
 bedtools bamtofastq \
--i   $indir/HHHY7DSX2_2#169198_ACTCGCTAAAGGAGTA.bam \
--fq $outdir/HHHY7DSX2_2#169198_ACTCGCTAAAGGAGTA.fastq
-
-bedtools bamtofastq \
--i   $indir/HHHY7DSX2_2#169198_ACTCGCTAACTGCATA.bam \
--fq $outdir/HHHY7DSX2_2#169198_ACTCGCTAACTGCATA.fastq
-
-bedtools bamtofastq \
--i   $indir/HHHY7DSX2_2#169198_ACTCGCTAAGAGTAGA.bam \
--fq $outdir/HHHY7DSX2_2#169198_ACTCGCTAAGAGTAGA.fastq
+-i  $infile \
+-fq $outdir/$outfile

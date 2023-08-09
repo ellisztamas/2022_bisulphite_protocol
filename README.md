@@ -2,7 +2,7 @@
 
 In 2022 Viktoria spent a lot of time formulating and optimising a new
 bisulphite-sequencing protocol to save time and money. Concerns were raised 
-that conversion rates came back as being suspiciously low.
+that conversion rates came back as being suspiciously low (~5%).
 
 Note: I (Tom Ellis) am writing this in November 2022, having been on paternity
 leave for most of the year while the experimental procedures were done, so
@@ -44,30 +44,19 @@ Data from test runs of the new protocol done throughout 2022 came back with
 lower apparent conversion rates than recent data using the previous protocol
 (specifically, Rahul's data on F2 crosses grown at 4°C and 16°C).
 
-## Data
+## How to navigate this folder
 
-- Data from a spike-in done on plate 2021-015 (96 F2s from crosses between lines
-    with high and low TE loads) using the new bisulphite protocol. Raw data are
-    soft-linked from `/resources/ngs/nordborg/13786` to `01_data/02_new_protocol`.
-- Data from pentuple mutants for a smågasbord of methylation genes that should
-    not show any methylation at all. There were two plants,
-    Raw data are soft-linked from `/resources/ngs/nordborg/14404/` to
-    `01_data/04_pentuple_mutant`.
-- It would make sense to compare with recent data from Rahul Pisupati's plants
-    grown at two temperatures, because these were the most recent samples to be 
-    run with the old protocol. In particular, there was a spike-in for a plate
-    with pairs of the same tissue but using the two protocols at
-    `/resources/ngs/nordborg/13106/`, but nobody seems to have an idea of which
-    sample was which.
-- `01_data/03_reference_genome` links to files for the TAIR10 reference genome.
+### Data
 
-Soft links to the raw tarballs are given in the `01_data` folder, along with
-scripts to unzip them to `scratch-cbe`. For `01_data/02_new_protocol` I made a 
-separate folder at `scratch-cbe/users/thomas.ellis/00_temp` for the first five
-samples, because there is no need to run the pipelines on all 96 samples.
-Foolishly, I did not record the command I used to do that.
+See the readme file in `01_data` for details of different datasets.
 
-## Pipeline
+### Mapping reads
+
+The primary effort was to fix the non-conversion issue by playing with the 
+bioinformatics settings.
+
+For the commands used see `03_processing/nextflow_commands.sh`.
+Output is in `04_output`.
 
 I used a fork of the `nextflow_pipelines` repo from Rahul, who ultimately forked
 it from Felix Krüger and Simon Andrews. 
@@ -83,6 +72,15 @@ I used the `nf_bisulphite_WGBS` module, which runs:
 So far I used a custom hacky script to get conversion rates manually.
 See `03_processing/conversion_rates_manually.py`.
 
+### Other results
+
+For more involved results that went beyond just fiddling with the trimming
+settings see the folders in `05_results`. Each folder has a `result_summary.md`
+file that summarises what I did and the conclusions.
+
+See also 06_reports for more involved thinking about how to deal with the
+low conversion rates.
+
 ## Summary of conclusions
 
 - For 5 samples from the spike-in done on plate 2021-015 I tested various ways to
@@ -97,6 +95,15 @@ See `03_processing/conversion_rates_manually.py`.
     - All samples showing conversion rates of 10e-2
     - This includes the Col-0 control
     - This did not depend on transposase concentration.
-
-I am out of ideas, so I conclude that its best to go back to the old pipeline.
-
+- There is an odd periodicity to the mistakes.
+    - I found autocorrelation in the position of methylated cytosines on the
+        chloroplast over 20 bp
+    - Greg found clear periodicity over ~150 bp.
+    - This is also true in the lambda vector, so it is unlikely to be residual 
+        chromatin packing.
+- We asked Bob Schmitz his opinion:
+    - in addition to making double strand breaks, the tn5 transposase could be
+        making single-stand nicks all over the place, that are then repaired
+        with methylated dNTPs.
+    - The 150bp business might also have something to do with the size of tn5,
+        and that it jumps along the chromosome at 150bp intervals.
