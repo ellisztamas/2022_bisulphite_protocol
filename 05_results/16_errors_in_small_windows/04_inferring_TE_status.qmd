@@ -1,0 +1,174 @@
+---
+title: "Inferring methylation status across a genome"
+author: "Tom Ellis"
+format:
+  html:
+    code-fold: true
+execute:
+  cache: true
+  echo : false
+
+editor: visual
+---
+
+```{r}
+library("tidyverse")
+library('ggpubr')
+source("02_library/R/binomial_with_errors.R")
+source("02_library/R/call_methylation_state.R")
+
+```
+
+```{r}
+# Methylation on known targetted TEs
+cmt2 <- read_csv(
+  "05_results/13_identifying_te_methylation/output/mC_on_cmt2_TEs.csv",
+  col_types = 'cciii')
+rddm <- read_csv(
+  "05_results/13_identifying_te_methylation/output/mC_on_rddm_TEs.csv",
+  col_types = 'cciii')
+# Methylation on annotated genes
+genes <- read_csv(
+  "05_results/13_identifying_te_methylation/output/mC_genes.csv",
+  col_types = 'cciii')
+# Methylation in windows across the genome
+methylation_in_windows <- read_csv(
+  Sys.glob("05_results/16_errors_in_small_windows/output/*.mC_in_windows.csv")[1],
+  col_types = 'ccciii'
+) %>% 
+  rename(id = start)
+
+
+col0_paths <- Sys.glob("05_results/15_nonconversion_uncertainty/output/col0/*.methylation_counts.csv")
+col0_in_windows <- lapply(
+  col0_paths, read_csv, col_types = 'ccciii'
+)
+# Unique ID for each window
+for(i in 1:4){
+  col0_in_windows[[i]]$id <- paste(col0_in_windows[[i]]$chr, col0_in_windows[[i]]$start, sep = "_")
+}
+
+
+```
+
+```{r}
+shape1 <- 8.529238
+shape2 <- 111.4319
+
+state_cmt2 <- cmt2 %>% 
+  call_methylation_state(shape1, shape2)
+state_rddm <- rddm %>% 
+  call_methylation_state(shape1, shape2)
+
+ggarrange(
+state_cmt2 %>%
+  filter(n > 50) %>% 
+  ggplot(aes(x = state)) +
+  geom_bar() +
+  labs(
+    title = "CMT2-targetted TEs"
+  ),
+
+state_rddm %>%
+  filter (n > 50 ) %>% 
+  ggplot(aes(x= state)) +
+  geom_bar() + 
+  labs(
+    title = "RdDM-targetted TEs"
+  )
+)
+```
+
+```{r}
+methylation_in_windows %>% 
+  filter(chr == "ChrC") %>% 
+    call_methylation_state(shape1, shape2) %>% 
+  ggplot(aes(x = state)) +
+  geom_bar()
+# filter(state != "unmethylated")
+
+methylation_in_windows %>% 
+  filter(chr == "ChrC", id == "24750")
+```
+
+```{r}
+state_genes <- genes %>% 
+  call_methylation_state(shape1, shape2) 
+
+state_genes %>% 
+  ggplot(aes(x = state)) +
+  geom_bar()
+
+state_genes %>% 
+  group_by(state) %>% 
+  summarise(
+    n = n() / nrow(state_genes)
+  )
+```
+
+```{r}
+# Does it work if we downsample?
+
+# Chloroplast still comes back as unmethylated
+mC_in_windows %>%
+  # rename(id = start) %>% 
+  filter(
+    chr == "ChrC"
+  ) %>% 
+  mutate(
+    meth = round(meth/5),
+    unmethylated = round(unmethylated/5)
+  ) %>%
+  call_methylation_state(shape1, shape2) %>% 
+  filter(n > 0) %>% 
+  ggplot(aes(x = state)) +
+  geom_bar()
+
+# TEs are more likely to be mCG or unmethylated
+ggarrange(
+  state_cmt2 %>% 
+    ggplot(aes(x = state)) +
+    geom_bar(),
+  
+  cmt2 %>% 
+    mutate(
+      meth = round(meth/6),
+      unmethylated = round(unmethylated/6)
+    ) %>%
+    call_methylation_state(shape1, shape2) %>% 
+    ggplot(aes(x = state)) +
+    geom_bar()
+)
+
+ggarrange(
+  state_rddm %>% 
+    ggplot(aes(x = state)) +
+    geom_bar(),
+
+  rddm %>% 
+    mutate(
+      meth = round(meth* 1/5),
+      unmethylated = round(unmethylated* 1/5)
+    ) %>%
+    call_methylation_state(shape1, shape2) %>% 
+    ggplot(aes(x = state)) +
+    geom_bar()
+)
+
+# Genes stay the same, surprisingly
+ggarrange(
+  genes %>% 
+    call_methylation_state(shape1, shape2) %>% 
+    ggplot(aes(x = state)) +
+    geom_bar(),
+  
+  genes %>% 
+    mutate(
+      meth = round(meth* 1/5),
+      unmethylated = round(unmethylated* 1/5)
+    ) %>%
+    call_methylation_state(shape1, shape2) %>% 
+    ggplot(aes(x = state)) +
+    geom_bar()
+)
+```
