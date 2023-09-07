@@ -15,13 +15,6 @@ probably know the right answer by looking at:
     - chloroplast (unmethylated)
     - gene bodies (these should be a mixture of stuff tbh...)
     - TEs known to be methylated by the RdDM and CMT2 pathways
-
-In principle we want to know whether methylation is zero or more than zero.
-However, that fails because there tends to be residual erroneous methylation,
-and that tends to bias things in favour of TE methylation.
-Instead I calculated the probability that methylation is above or below some 
-threshold by integrating over an array of possible mean methylation levels
-
 ## What did you do?
 
 - I looked at a single genome of Col-0 sequenced at 30x coverage
