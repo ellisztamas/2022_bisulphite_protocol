@@ -12,17 +12,17 @@ logsumexp <- function(x){
 #' @param y Int number of successes. Must be less than n
 #' @param n Int number of trials.
 #' @param p True mean of the underlying binomial process
-#' @param lambda1 Float between 0 and 1 giving the probability that a methylated
-#' read is appears unmethylated
-#' @param lambda2 Float between 0 and 1 giving the probability that an
+#' @param lambda1 Float between 0 and 1 giving the probability that an
 #' unmethylated read is appears methylated
+#' @param lambda2 Float between 0 and 1 giving the probability that a methylated
+#' read is appears unmethylated
 #'
 #' @return Log likelihood of the data given p
 #' @author Tom Ellis
 llbinom_with_errors <- function(y, n, p, lambda1, lambda2 = lambda1){
   loglik <- lchoose(n = n, k = y) +
-    log( p*(1-lambda2) + (1-p) *    lambda1  ) * y  +
-    log( p *  lambda2  + (1-p) * (1-lambda1) ) * (n-y)
+    log( p*(1-lambda1) + (1-p) *    lambda2  ) * y  +
+    log( p *  lambda1  + (1-p) * (1-lambda2) ) * (n-y)
 
   loglik[n==0] <- 0
 
@@ -42,7 +42,7 @@ llbinom_with_errors <- function(y, n, p, lambda1, lambda2 = lambda1){
 #' @return Vector of integers
 #' @author Tom Ellis
 rbinom_with_errors <- function(p, lambda1, lambda2, size, nreps=1){
-  sim_mean <- (p*(1-lambda2)) + ((1-p)*lambda1)
+  sim_mean <- (p*(1-lambda1)) + ((1-p)*lambda2)
   mC <- rbinom(n=nreps, size=size, prob = sim_mean)
   uC <- size - mC
 
