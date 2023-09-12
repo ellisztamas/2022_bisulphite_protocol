@@ -25,9 +25,9 @@ original_sample_sheet = pd.concat([
 ])
 
 # Subset the dataframe to return only those samples repeated in the mix plate
-original_sample_sheet.loc[original_sample_sheet['sample'].isin(design['design_sample_id'])]
+subsetted_sample_sheet = original_sample_sheet.loc[original_sample_sheet['sample'].isin(design['design_sample_id'])]
 
 # Save to disk
-original_sample_sheet.to_csv(
+subsetted_sample_sheet.to_csv(
     "03_processing/02_map_original_f2s/original_plate_positions.csv", index = False
 )

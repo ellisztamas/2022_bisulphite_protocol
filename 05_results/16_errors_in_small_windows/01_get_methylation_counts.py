@@ -1,10 +1,7 @@
 """
 Script to import the TAIR10 annotation file and pull out information methylated
-and unmethylated reads in each context for:
-1. genes
-2. RdDM- and CMT-regulated TEs
-3. windows of 1000 base pairs across each chromosome
-for the genotyping file on the 30x Col-0 data we ran.
+and unmethylated reads in each context for windows of 150 base pairs across each
+chromosome for the genotyping file on the 30x Col-0 data we ran.
 """
 
 import epiclinestools as epi
