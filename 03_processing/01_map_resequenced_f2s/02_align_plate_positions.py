@@ -43,6 +43,9 @@ sample_positions = epi.align_fastq_with_plate_positions(
     prefix = "mix_"
     )
 
-# Separate F2 and selfed offspring of the parents and write to disk
+# Add a column for the genome of each individual
+sample_positions.\
+    insert(3, 'genome', "01_data/03_reference_genome/TAIR10_wholeGenome_withVectors.fasta")
+# Write to disk.
 sample_positions.\
     to_csv('03_processing/01_map_resequenced_f2s/mix_plate_positions.csv', index=False)

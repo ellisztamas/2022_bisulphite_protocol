@@ -36,5 +36,8 @@ There is quite a bit of variation between samples, and I only ran it on five fil
 
 Methylation levels on the other chromosomes goes *up* from ~8% to ~25%
 
+Need to double check that the check for whether mate pairs match makes sense!
+I used the read tag, but check the bitwise code
+
 ## Follow-up
 Compare with data from the old protocol

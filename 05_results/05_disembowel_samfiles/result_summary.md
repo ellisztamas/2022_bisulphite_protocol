@@ -39,6 +39,9 @@ clustered reads should solve most of the problem.
 I tried to do a comparison with Rahul's folder, but it seems the anatomy of
 those SAM files is different.
 
+Need to double check that the check for whether mate pairs match makes sense!
+I used the read tag, but check the bitwise code
+
 ## Follow-up
 Compare with the old protocol.
 Go through and pull out read *pairs*, because I think one bad read will pull

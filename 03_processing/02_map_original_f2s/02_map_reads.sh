@@ -23,11 +23,8 @@ nextflow -log $scratch/nextflow.log run $pipeline_location \
 --input 03_processing/02_map_original_f2s/original_plate_positions.csv \
 --outdir $scratch/methylseq \
 --fasta $ref_genome \
---clip_r1 15 \
---clip_r2 15 \
---unmapped \
+--clip_r1 15 --clip_r2 15  --three_prime_clip_r1 9  --three_prime_clip_r2 9 \
 --cytosine_report \
 --aligner bismark \
 -profile cbe \
 -w $scratch/work
-

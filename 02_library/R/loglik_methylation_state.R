@@ -65,7 +65,7 @@ loglik_methylation_state <- function(read_counts, lambda1, lambda2, threshold, r
     ll_vector <- ll_vector - logsumexp(ll_vector)
     c(
       logsumexp(ll_vector[theta_vals < threshold]),
-      logsumexp(ll_vector[theta_vals >=threshold])
+      logsumexp(ll_vector[theta_vals >= threshold])
     )
   }
   )

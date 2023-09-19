@@ -134,3 +134,27 @@ nextflow run 02_library/nextflow_pipelines/nf_bisulfite_WGBS \
 --bismark_args="--score_min L,0,0.5" \
 -with-conda = true \
 -w /scratch-cbe/users/thomas.ellis/05_col0_flies/9601/work
+
+# Col-0 sequenced at high coverage
+scratch=/scratch-cbe/users/thomas.ellis/05_col0_flies/col0
+nextflow -log $scratch/work/nextflow.log \
+run 02_library/nextflow_pipelines/nf_bisulfite_WGBS \
+--input_files "/scratch-cbe/users/thomas.ellis/05_col0_flies/**/**/22084*/Col0*_R{1,2}*fastq.gz" \
+--fasta 01_data/03_reference_genome/TAIR10_wholeGenome_withVectors.fasta \
+--outdir 04_output/30x_col0 \
+--trim_galore_args="--clip_r1 15 --clip_r2 15 --three_prime_clip_R1 9 --three_prime_clip_R2 9" \
+--bismark_args="--non_directional --strandID" \
+-with-conda = true \
+-w $scratch/work
+
+# Flies sequenced at high coverage
+scratch=/scratch-cbe/users/thomas.ellis/05_col0_flies/d_mel
+nextflow -log $scratch/work/nextflow.log \
+run 02_library/nextflow_pipelines/nf_bisulfite_WGBS \
+--input_files "/scratch-cbe/users/thomas.ellis/05_col0_flies/**/**/22084*/Fly*_R{1,2}*fastq.gz" \
+--fasta 01_01_data/06_fly_genome/dm6_plus_vectors.fasta \
+--outdir 04_output/30x_col0 \
+--trim_galore_args="--clip_r1 15 --clip_r2 15 --three_prime_clip_R1 9 --three_prime_clip_R2 9" \
+--bismark_args="--non_directional --strandID" \
+-with-conda = true \
+-w $scratch/work

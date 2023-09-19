@@ -11,7 +11,7 @@ class BismarkSam(object):
         self.id = read[0]
         self.chr = read[2]
         self.length = len(read[9])
-        self.xm_tag = self.trim_XM_tag(read[13][5:])
+        self.xm_tag = read[13][5:]#self.trim_XM_tag(read[13][5:])
     
     def trim_XM_tag(self, xm_tag):
         """
