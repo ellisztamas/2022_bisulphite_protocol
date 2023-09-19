@@ -1,0 +1,5 @@
+sample,fastq_1,fastq_2
+9601_cont_05_15X,/scratch-cbe/users/thomas.ellis/05_col0_flies/AACJNTVM5_0_R14907_20230206/demultiplexed/220842/9601_cont_05_15X_R1_001.fastq.gz,/scratch-cbe/users/thomas.ellis/05_col0_flies/AACJNTVM5_0_R14907_20230206/demultiplexed/220842/9601_cont_05_15X_R2_001.fastq.gz
+9601_cont_10_15X,/scratch-cbe/users/thomas.ellis/05_col0_flies/AACJNTVM5_0_R14907_20230206/demultiplexed/220842/9601_cont_10_15X_R1_001.fastq.gz,/scratch-cbe/users/thomas.ellis/05_col0_flies/AACJNTVM5_0_R14907_20230206/demultiplexed/220842/9601_cont_10_15X_R2_001.fastq.gz
+9601_cont_05_13X,/scratch-cbe/users/thomas.ellis/05_col0_flies/AACJNTVM5_0_R14907_20230206/demultiplexed/220843/9601_cont_05_13X_R1_001.fastq.gz,/scratch-cbe/users/thomas.ellis/05_col0_flies/AACJNTVM5_0_R14907_20230206/demultiplexed/220843/9601_cont_05_13X_R2_001.fastq.gz
+9601_cont_10_13X,/scratch-cbe/users/thomas.ellis/05_col0_flies/AACJNTVM5_0_R14907_20230206/demultiplexed/220843/9601_cont_10_13X_R1_001.fastq.gz,/scratch-cbe/users/thomas.ellis/05_col0_flies/AACJNTVM5_0_R14907_20230206/demultiplexed/220843/9601_cont_10_13X_R2_001.fastq.gz
