@@ -12,15 +12,15 @@
 
 # Tom Ellis, 19th September 2023
 
-#SBATCH --job-name=align_30x
-#SBATCH --time=1:00:00
+#SBATCH --job-name=map_tn5
+#SBATCH --time=1-00:00
 #SBATCH -N 1
 #SBATCH --cpus-per-task=5
 #SBATCH --mem-per-cpu=5G
-#SBATCH --qos=rapid
-#SBATCH --array=1-12 # Start at 1, because the sample sheet has a header row
-#SBATCH --output=slurm/align_30x-%a.out
-#SBATCH --error=slurm/align_30x-%a.err
+#SBATCH --qos=medium
+#SBATCH --array=1-8 # Start at 1, because the sample sheet has a header row
+#SBATCH --output=slurm/map_tn5-%a.out
+#SBATCH --error=slurm/map_tn5-%a.err
 
 module load build-env/f2022
 module load anaconda3/2023.03
@@ -28,12 +28,12 @@ source $EBROOTANACONDA3/etc/profile.d/conda.sh
 conda activate epiclines
 
 # working directory
-scratch=/scratch-cbe/users/$(whoami)/05_col0_flies
+scratch=/scratch-cbe/users/$(whoami)/13_enzymatic_vs_tn5/
 # output directory
-outdir=03_processing/04_col0_flies_methylseq/output
+outdir=03_processing/05_enzymatic_vs_tn5/output
 
 # Sample sheet giving sample name and paths to the two fastq files
-sample_sheet=03_processing/04_col0_flies_methylseq/sample_sheet.csv
+sample_sheet=03_processing/05_enzymatic_vs_tn5/tn5_sample_sheet.csv
 # Get the sample name
 sample_names=$(cut -d',' -f1 $sample_sheet)
 sample_names=($sample_names)

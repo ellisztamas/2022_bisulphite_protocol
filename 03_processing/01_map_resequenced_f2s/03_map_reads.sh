@@ -12,7 +12,7 @@
 # Tom Ellis, 19th September 2023
 
 #SBATCH --job-name=align_mixplate
-#SBATCH --time=2-00:00
+#SBATCH --time=1-00:00
 #SBATCH -N 1
 #SBATCH --cpus-per-task=5
 #SBATCH --mem-per-cpu=5G
@@ -27,11 +27,11 @@ source $EBROOTANACONDA3/etc/profile.d/conda.sh
 conda activate epiclines
 
 # working directory
-scratch=/scratch-cbe/users/thomas.ellis/mix_plate
+scratch=/scratch-cbe/users/$(whoami)/mix_plate
 # output directory
 outdir=03_processing/01_map_resequenced_f2s/output
 # FASTA file for the genome to map to
-genome=01_data/03_reference_genome/TAIR10_wholeGenome_withVectors.fasta
+genome=03_processing/01_prepare_genomes/col0/TAIR10_plus_vectors.fa
 
 # Sample sheet giving sample name and paths to the two fastq files
 sample_sheet=03_processing/01_map_resequenced_f2s/mix_plate_positions.csv
@@ -44,6 +44,9 @@ read1_col=($read1_col)
 # Path for read 2
 read2_col=$(cut -d',' -f3 $sample_sheet)
 read2_col=($read2_col)
+# Additional options to pass to Trim Galore! and Bismark.
+trim_galore_args="--clip_r1 15 --clip_r2 15 --three_prime_clip_R1 9 --three_prime_clip_R2 9 --cores 4"
+bismark_args="--local --non_directional --strandID"
 
 # Run the script
 02_library/bash/bismark_pipeline.sh \
@@ -52,4 +55,6 @@ read2_col=($read2_col)
     --read2  "${read2_col[$SLURM_ARRAY_TASK_ID]}" \
     --genome $genome \
     --work $scratch \
-    --outdir $outdir
+    --outdir $outdir \
+    --trim_galore_args "${trim_galore_args}" \
+    --bismark_args "${bismark_args}"
