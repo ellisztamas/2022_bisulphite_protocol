@@ -29,12 +29,12 @@ conda activate epiclines
 # working directory
 scratch=/scratch-cbe/users/$(whoami)/mix_plate
 # output directory
-outdir=03_processing/01_map_resequenced_f2s/output
+outdir=03_processing/02_map_resequenced_f2s/output
 # FASTA file for the genome to map to
 genome=03_processing/01_prepare_genomes/col0/TAIR10_plus_vectors.fa
 
 # Sample sheet giving sample name and paths to the two fastq files
-sample_sheet=03_processing/01_map_resequenced_f2s/mix_plate_positions.csv
+sample_sheet=03_processing/02_map_resequenced_f2s/mix_plate_positions.csv
 # Get the sample name
 sample_names=$(cut -d',' -f1 $sample_sheet)
 sample_names=($sample_names)

@@ -18,12 +18,12 @@ conda activate epiclines
 date
 
 # Array of four cytosine reports
-files=(03_processing/02_map_original_f2s/output/reports/*CX_report.txt.gz)
+files=(03_processing/03_map_original_f2s/output/reports/*CX_report.txt.gz)
 
 # File for this job
 infile=${files[$SLURM_ARRAY_TASK_ID]}
 # Output directory
-outdir=03_processing/02_map_original_f2s/output/windows/
+outdir=03_processing/03_map_original_f2s/output/windows/
 mkdir -p $outdir
 # output filename for methylation in windows
 outfile_windows=$outdir/$(basename $infile)
