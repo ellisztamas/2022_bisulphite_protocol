@@ -1,0 +1,94 @@
+%
+\documentclass[useAMS,usenatbib]{tellus}
+\usepackage[a4]{crop}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{soul}
+\usepackage{fancyhdr}
+%\pagestyle{fancy}
+%\usepackage{exttab}
+
+\renewcommand{\vec}[1]{\boldsymbol{#1}}  %vector
+\newcommand{\dx}{\mathsf{X}}
+\newcommand{\dy}{\mathsf{Y}}
+\newcommand{\vmat}{\mathsf{V}}
+\newcommand{\mat}[1]{\mathsf{#1}}
+\newcommand{\xavg}{\overline{\vec{x}}}
+\newcommand{\etkf}{\dagger}
+\newcommand{\iden}{\mathrm{I}}
+\newcommand{\uxmat}{\mat{U}_{\mathrm{x}}}
+\newcommand{\uxmatfull}{\hat{\mat{U}}_{\mathrm{x}}}
+\newcommand{\uzmat}{\mat{U}_{\mathrm{z}}}
+
+\begin{document}
+
+\title[Bisulphite sequencing in the presence of cytosine-conversion errors]{Bisulphite sequencing in the presence of cytosine-conversion errors}
+
+\author[\centering AUTHOR]{
+    \so{Thomas James Ellis, Viktoria Nyzhynska, Rahul Pisupati, Gr\'{e}goire Bohl-Viallefond, Almudena Moll\`a Morales, Magnus Nordborg}
+    \thanks{Corresponding author.\hfil\break e-mail: magnus.nordborg@gmi.oeaw.ac.at}}
+    \affiliation{Gregor Mendel Institute of Molecular Plant Biology, Doktor-Bohr-Gasse 3, 1030 Vienna, Austria}
+
+
+\history{Manuscript received xx xxxx xx; in final form xx
+xxxx xx}
+
+\maketitle
+
+\begin{abstract}
+Cytosine methylation is a common epigenetic mark, and is associated with silencing of transposable elements.
+Bisulphite treatment of DNA, leading to the conversion of unmethylated cytosines to thymine, is a common approach to infer the methylation status of cytosines.
+'Tagmentation' approaches to bisulphite treatment use a transposase to simultaneously make double-stranded breaks and ligate adaptors to the resulting fragments.
+This facilitates higher throughput of samples than is practical using traditional protocols that rely on sonication.
+However, it has also been noted that certain tagmentation protocols have an unusually high number unmethylated cytosines that are not converted to thymine.
+Here we describe this phenomenon in detail, and find that this is unlikely to be due to PCR or bioinformatic artefacts.
+We tentatively suggest that the issue is due to single strand nicks by the transposase.
+Nevertheless we show that these errors can be accounted for in downstream analysis, and that for many applications they are sufficiently small not to affect biological conclusions.
+\end{abstract}
+
+\begin{keywords}
+methylation, bisulphite, transposase, tagmentation
+\end{keywords}
+
+\section{Introduction}
+
+\section{Materials and Methods}
+
+\subsection{Biological material}
+
+\subsection{Non-conversion rates in a binomial model}
+
+Methylation pipelines tell us that of a total of $n$ reads mapping to a region of a genome, we observe $y$ reads mapping to methylated cytosines and $n-y$ reads mapping to unmethylated cytosines. The goal is to estimate the true mean methylation level $\theta$ which generated these data, accounting for conversion errors.
+
+In the absence of errors, the likelihood of the data given $\theta$ is binomially distributed as
+
+$$ \Pr(y| \theta) = {n \choose y} \theta^y(1-\theta)^{n-y}$$
+
+with mean $\theta=y/n$.
+
+Data are not perfect, so we would like to incorporate two error terms:
+
+-   $\lambda_1$ is the probability that an unmethylated cytosine appears methylated (the bisulphite non-conversion rate).
+-   $\lambda_2$ is the probability that a methylated cytosine appears unmethylated.
+
+Cytosines observed to be methylated may thus be either:
+
+-   truly methylated with probability $\theta(1-\lambda_2)$
+-   truly unmethylated with probability $(1-\theta)\lambda_1$.
+
+Likewise, a cytosine observed to be unmethylated may be either
+
+-   truly unmethylated with probability $(1-\theta)(1-\lambda_1)$
+-   truly methylated with probability $\theta \lambda_2$.
+
+This changes the likelihood to
+
+$$ \Pr(y | \theta, \lambda_1, \lambda_2) = 
+{n \choose y}
+[\theta(1-\lambda_2) + (1-\theta)\lambda_1]^y
+[\theta \lambda_2 + (1-\theta)(1-\lambda_1)]^{n-y}
+$$
+
+This has a closed form maximum-likelihood estimate of
+
+$$ \hat{\theta} = \frac{\lambda_1-p}{\lambda_1 + \lambda_2 -1} $$
