@@ -1,54 +1,110 @@
 %
-\documentclass[useAMS,usenatbib]{tellus}
-\usepackage[a4]{crop}
-\usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage{soul}
-\usepackage{fancyhdr}
-%\pagestyle{fancy}
-%\usepackage{exttab}
+% Paper title
+% Authors
+% 
+%-----------------------------------------------------------------
 
-\renewcommand{\vec}[1]{\boldsymbol{#1}}  %vector
-\newcommand{\dx}{\mathsf{X}}
-\newcommand{\dy}{\mathsf{Y}}
-\newcommand{\vmat}{\mathsf{V}}
-\newcommand{\mat}[1]{\mathsf{#1}}
-\newcommand{\xavg}{\overline{\vec{x}}}
-\newcommand{\etkf}{\dagger}
-\newcommand{\iden}{\mathrm{I}}
-\newcommand{\uxmat}{\mat{U}_{\mathrm{x}}}
-\newcommand{\uxmatfull}{\hat{\mat{U}}_{\mathrm{x}}}
-\newcommand{\uzmat}{\mat{U}_{\mathrm{z}}}
+\documentclass[12pt,longbibliography]{article}
+
+% Packages
+%-----------------------------------------------------------------
+
+% Allow direct use of accents such as á é ñ.
+\usepackage[utf8]{inputenc}
+
+% This is a good idea to have some symbols included within the font
+% properly:
+% http://tex.stackexchange.com/questions/664/why-should-i-use-usepackaget1fontenc
+\usepackage[T1]{fontenc}
+
+% Set type of paper and margins.
+\usepackage[a4paper, margin=2.7cm]{geometry}
+
+\usepackage{amsmath, amsthm, amsfonts, amssymb}
+\usepackage{mathrsfs}           % \mathscr font.
+
+% Generate a PDF with hyperlinks in references.
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,breaklinks]{hyperref}
+
+% Double-stroke font (\mathbbm).
+\usepackage{bbm} 
+
+
+% Bibliography
+%-----------------------------------------------------------------
+
+% This uses a bibliography style which hyperlinks the paper titles to
+% the paper URL specified in the bibtex file. It also uses natbib,
+% which cites papers by name such as Euler (1770) instead of [17].
+
+\usepackage{breakurl}
+\usepackage{natbib}
+\usepackage{url}
+\bibliographystyle{plainnat-linked}
+% \bibliographystyle{plain}
+
+% Title, author, date
+%-----------------------------------------------------------------
+
+% If set, these will be the internal title and author of the PDF (and
+% will be listed for example in ereaders and tablets).
+
+% \hypersetup{pdftitle={Title of the PDF}}
+% \hypersetup{pdfauthor={Author of the PDF}}
+
+
+% Paper title and author
+\title{Bisulphite sequencing in the presence of cytosine-conversion errors} % Article title
+
+\author{
+    Thomas James Ellis 
+    \and
+    Rahul Pisupati 
+    \and
+    Gr\'{e}goire Bohl-Viallefond
+    \and
+    Almudena Moll\'a Morales
+    \and
+    Magnus Nordborg
+}
+
+
+
+% Date is set automatically unless specified.
+% \date{October 2015}
+
+\date{\today} % Leave empty to omit a date
 
 \begin{document}
-
-\title[Bisulphite sequencing in the presence of cytosine-conversion errors]{Bisulphite sequencing in the presence of cytosine-conversion errors}
-
-\author[\centering AUTHOR]{
-    \so{Thomas James Ellis, Viktoria Nyzhynska, Rahul Pisupati, Gr\'{e}goire Bohl-Viallefond, Almudena Moll\`a Morales, Magnus Nordborg}
-    \thanks{Corresponding author.\hfil\break e-mail: magnus.nordborg@gmi.oeaw.ac.at}}
-    \affiliation{Gregor Mendel Institute of Molecular Plant Biology, Doktor-Bohr-Gasse 3, 1030 Vienna, Austria}
-
-
-\history{Manuscript received xx xxxx xx; in final form xx
-xxxx xx}
-
 \maketitle
 
 \begin{abstract}
-Cytosine methylation is a common epigenetic mark, and is associated with silencing of transposable elements.
-Bisulphite treatment of DNA, leading to the conversion of unmethylated cytosines to thymine, is a common approach to infer the methylation status of cytosines.
-'Tagmentation' approaches to bisulphite treatment use a transposase to simultaneously make double-stranded breaks and ligate adaptors to the resulting fragments.
-This facilitates higher throughput of samples than is practical using traditional protocols that rely on sonication.
-However, it has also been noted that certain tagmentation protocols have an unusually high number unmethylated cytosines that are not converted to thymine.
-Here we describe this phenomenon in detail, and find that this is unlikely to be due to PCR or bioinformatic artefacts.
-We tentatively suggest that the issue is due to single strand nicks by the transposase.
-Nevertheless we show that these errors can be accounted for in downstream analysis, and that for many applications they are sufficiently small not to affect biological conclusions.
-\end{abstract}
+    Cytosine methylation is a common epigenetic mark, and is associated with silencing of transposable elements.
+    Bisulphite treatment of DNA, leading to the conversion of unmethylated cytosines to thymine, is a common approach to infer the methylation status of cytosines.
+    'Tagmentation' approaches to bisulphite treatment use a transposase to simultaneously make double-stranded breaks and ligate adaptors to the resulting fragments.
+    This facilitates higher throughput of samples than is practical using traditional protocols that rely on sonication.
+    However, it has also been noted that certain tagmentation protocols have an unusually high number unmethylated cytosines that are not converted to thymine.
+    Here we describe this phenomenon in detail, and find that this is unlikely to be due to PCR or bioinformatic artefacts.
+    We tentatively suggest that the issue is due to single strand nicks by the transposase.
+    Nevertheless we show that these errors can be accounted for in downstream analysis, and that for many applications they are sufficiently small not to affect biological conclusions.
+    \end{abstract}
 
-\begin{keywords}
-methylation, bisulphite, transposase, tagmentation
-\end{keywords}
+
+
+% \author[\centering AUTHOR]{
+%     \so{Thomas James Ellis, Viktoria Nyzhynska, Rahul Pisupati, Gr\'{e}goire Bohl-Viallefond, Almudena Moll\`a Morales, Magnus Nordborg}
+%     \thanks{Corresponding author.\hfil\break e-mail: magnus.nordborg@gmi.oeaw.ac.at}}
+%     \affiliation{Gregor Mendel Institute of Molecular Plant Biology, Doktor-Bohr-Gasse 3, 1030 Vienna, Austria}
+
+
+% \history{Manuscript received xx xxxx xx; in final form xx
+% xxxx xx}
+
+\maketitle
+
+% \begin{keywords}
+% methylation, bisulphite, transposase, tagmentation
+% \end{keywords}
 
 \section{Introduction}
 
@@ -61,34 +117,107 @@ methylation, bisulphite, transposase, tagmentation
 Methylation pipelines tell us that of a total of $n$ reads mapping to a region of a genome, we observe $y$ reads mapping to methylated cytosines and $n-y$ reads mapping to unmethylated cytosines. The goal is to estimate the true mean methylation level $\theta$ which generated these data, accounting for conversion errors.
 
 In the absence of errors, the likelihood of the data given $\theta$ is binomially distributed as
-
-$$ \Pr(y| \theta) = {n \choose y} \theta^y(1-\theta)^{n-y}$$
-
+\begin{equation}
+    \label{eqn:classic-binomial}
+    \Pr(y| \theta) = {n \choose y} \theta^y(1-\theta)^{n-y}
+\end{equation}
 with mean $\theta=y/n$.
-
 Data are not perfect, so we would like to incorporate two error terms:
-
--   $\lambda_1$ is the probability that an unmethylated cytosine appears methylated (the bisulphite non-conversion rate).
--   $\lambda_2$ is the probability that a methylated cytosine appears unmethylated.
-
-Cytosines observed to be methylated may thus be either:
-
--   truly methylated with probability $\theta(1-\lambda_2)$
--   truly unmethylated with probability $(1-\theta)\lambda_1$.
-
-Likewise, a cytosine observed to be unmethylated may be either
-
--   truly unmethylated with probability $(1-\theta)(1-\lambda_1)$
--   truly methylated with probability $\theta \lambda_2$.
-
+\begin{itemize}
+    \item $\lambda_1$ is the probability that an unmethylated cytosine appears methylated (the bisulphite non-conversion rate).
+    \item $\lambda_2$ is the probability that a methylated cytosine appears unmethylated.
+\end{itemize}
+Cytosines observed to be methylated may thus be either truly methylated with probability $\theta(1-\lambda_2)$ or truly unmethylated with probability $(1-\theta)\lambda_1$. Likewise, a cytosine observed to be unmethylated may be either truly unmethylated with probability $(1-\theta)(1-\lambda_1)$ or truly methylated with probability $\theta \lambda_2$.
 This changes the likelihood to
+\begin{equation}
+    \label{eqn:binom-with-errors}
+    \Pr(y | \theta, \lambda_1, \lambda_2) = 
+    {n \choose y}
+    [\theta(1-\lambda_2) + (1-\theta)\lambda_1]^y
+    [\theta \lambda_2 + (1-\theta)(1-\lambda_1)]^{n-y}
+\end{equation}
+Summarising $p=[\theta(1-\lambda_2) + (1-\theta)\lambda_1]$ for brevity, this has a closed-form maximum-likelihood estimate
+\begin{equation}
+    \label{eqn:ml-theta}
+    \hat{\theta} = \frac{\lambda_1-p}{\lambda_1 + \lambda_2 -1}
+\end{equation}
 
-$$ \Pr(y | \theta, \lambda_1, \lambda_2) = 
-{n \choose y}
-[\theta(1-\lambda_2) + (1-\theta)\lambda_1]^y
-[\theta \lambda_2 + (1-\theta)(1-\lambda_1)]^{n-y}
-$$
+\subsection{Methylation status}
 
-This has a closed form maximum-likelihood estimate of
+In some cases it may be advantageous to think of DNA methylation as being in particular discrete states.
+For example, [Zhang et al. (2020)](https://www.pnas.org/doi/full/10.1073/pnas.1918172117) present a case that DNA methylation (at least on genes) represents a continuum between unmethylated DNA, TE-like methylation (CG, CHG and CHH methylation), and CG-only methylation.
+In this case it is likely that these states represent the effects of distinct biological pathways, so makes more sense to identify discrete states than to make quantitative estimates of methylation.
+We would thus like to partition the genome into regions that look like each of these contexts.
 
-$$ \hat{\theta} = \frac{\lambda_1-p}{\lambda_1 + \lambda_2 -1} $$
+Given total numbers of apparently methylated and unmethylated reads at each site ($y_{CG}$, $y_{CHG}$ and $y_{CHH}$) and reasonable point estimates of $\lambda_1$ and $\lambda_2$ we can use the estimate of $\hat{\theta}$ from \ref{eqn:ml-theta} above to calculate likelihoods that a window is unmethylated ($L_U$), TE-like methylated ($L_{TEm}$), or CG-methylated ($L_{CG}$):
+\begin{equation}
+    \label{eqn:lik-unmethylated}
+    L_{U} = 
+    \Pr( y_{CG} | \theta_{CG} =0, \lambda_1, \lambda_2)
+    \Pr(y_{CHG} | \theta_{CHG}=0, \lambda_1, \lambda_2)
+    \Pr(y_{CHH} | \theta_{CHH}=0, \lambda_1, \lambda_2)
+\end{equation}
+\begin{equation}
+    \label{eqn:lik-mCG}
+    L_{CG} = 
+    \Pr( y_{CG} | \theta_{CG}>0, \lambda_1, \lambda_2)
+    \Pr(y_{CHG} | \theta_{CHG}=0, \lambda_1, \lambda_2)
+    \Pr(y_{CHH} | \theta_{CHH}=0, \lambda_1, \lambda_2)
+\end{equation}
+\begin{equation}
+    \label{eqn:lik-TEm}
+    L_{TEm} = 
+    \Pr( y_{CG} | \theta_{CG}>0, \lambda_1, \lambda_2)
+    \Pr(y_{CHG} | \theta_{CHG}>0, \lambda_1, \lambda_2)
+    \Pr(y_{CHH} | \theta_{CHH}>0, \lambda_1, \lambda_2)
+\end{equation}
+
+This assumes errors are the same for CG, CHG and CHH sites; this is reasonable because we think errors happen in a tube, not a cell. It is probably sensible to set a minimum bound on the number of CG sites in a window such that you could actually expect to distinguish $\theta_{CG}$ and error rates.
+
+One could just take the model with the highest likelihood (better: AIC), and that may well be enough for our purposes. To perform formal likelihood ratio tests we first note that $L_{CG}$ is nested within $L_{TEm}$ and $L_{U}$ is nested within $L_{CG}$. Likelihood ratio tests can then be performed assuming the test statistic under the null is $\chi^2$-distributed 
+with 1 degree of freedom.
+
+\subsection{Uncertainty in error rates}
+
+The above formulation is valid for the case where there is a clear point estimate for error rates.
+If there is substantial uncertainty around these estimates values, and especially if they are likely to vary across the genomes, then the $\theta$ and error rates can be modelled as coming from Beta distributions with shape parameters $a$ and $b$:
+\begin{equation}
+    \theta \sim \textrm{Beta}(a_{\theta}, b_{\theta})
+\end{equation}
+\begin{equation}
+    \lambda_1 \sim \textrm{Beta}(a_{\lambda_1}, b_{\lambda_1})
+\end{equation}
+\begin{equation}
+    \lambda_2 \sim \textrm{Beta}(a_{\lambda_2}, b_{\lambda_2})
+\end{equation}
+The distributions over $\Pr(\theta)$, $\Pr(\lambda_1)$ and $\Pr(\lambda_2)$ represent prior distributions of $\theta$ and error rates, and can be estimated from other data.
+For example, $\lambda_1$ can be estimated by counting the proportion of all unconverted cytosines in windows of DNA that is known to be unmethylated to get a distribution of error rates, and taking mean $\bar{x}$ and variance $\sigma^2_x$ of these estimates.
+The shape parameters of the Beta distribution for $\Pr(\lambda_1)$ can be calculated by method-of-moments as
+\begin{equation}
+    \hat{a}_{\lambda_1} = \bar{x}(\frac{\bar{x}(1-\bar{x})}{\sigma^2_x}-1)
+\end{equation}
+\begin{equation}
+    \hat{b}_{\lambda_1} = 1-\bar{x}(\frac{\bar{x}(1-\bar{x})}{\sigma^2_x}-1) 
+\end{equation}
+
+We can use this information to estimate $\theta$ by integrating out values for error rates.
+The joint posterior distribution of $\theta, \lambda_1, \lambda_2$ is then
+\begin{equation}
+    \Pr(\theta, \lambda_1, \lambda_2 | y, \pi)
+    \propto 
+    \Pr(y | \theta, \lambda_1, \lambda_2)
+    \Pr(\theta | a_{\theta}, b_{\theta})
+    \Pr(\lambda_1 | a_{\lambda_1}, b_{\lambda_1})
+    \Pr(\lambda_2 | a_{\lambda_2}, b_{\lambda_2})
+\end{equation}
+where $\pi=\{a_{\theta}, a_{\lambda_1}, a_{\lambda_2}, b_{\theta}, b_{\lambda_1}, b_{\lambda_2}\}$ for brevity.
+The marginal posterior distribution for $\theta$ can be found by integrating over $\Pr(\lambda_1)$ and $\Pr(\lambda_2)$.
+The posterior mean of this distribution is the most probable value of $\theta$ accounting for all possible values of error rates. It ought to be possible to get a closed-form point estimate by setting the first derivative to zero and solving for $\theta$, but I haven't work out how yet.
+
+We can likewise modify the likelihood calculations of methylation statuses to include distributions of error rates.
+In this case we define distinct prior distributions for the expected distribution of true methylation under different scenarios, and calculate the support for each.
+For example, it is reasonable to expect that unmethylated DNA has a true methylation rate very close to zero, and hence we might define parameters for $\Pr(\theta)$ that give values very small means.
+
+
+
+\end{document}
