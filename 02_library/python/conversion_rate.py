@@ -15,4 +15,5 @@ args = parser.parse_args()
 
 cx_report = epi.CytosineCoverageFile(args.input)
 conversion = cx_report.conversion_rate()
-conversion.to_csv(args.output, index = False)
+conversion = conversion.loc[conversion['context'] == "total"]
+conversion.to_csv(args.output, index = False, float_format='%.3f')

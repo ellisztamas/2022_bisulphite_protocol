@@ -15,8 +15,9 @@ Can we fix that?
 
 ## What did you do?
 
-- `01_get_methylation_counts.py` gets methylation levels on the chloroplasts for
-    4 cytosine report files from Col-0 at high coverage.
+- `01_get_methylation_counts.py` gets methylation levels on the chloroplasts,
+    CMT2- and RdDM-targetted TEs and genes for 4 cytosine report files from
+    Col-0 at high coverage.
 - `02_submit_methylation` runs that as a job array.
 - `03_chloroplast.R` pokes about in them and checks whether error rates are 
     uniform, and whether we can correct for that

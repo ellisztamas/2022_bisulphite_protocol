@@ -20,8 +20,8 @@ design['design_sample_id'] = design['sample'] + "_" + design['genotype'].astype(
 # Import the two sample sheets previously created for F2s and parent samples
 # Merge into a single dataframe
 original_sample_sheet = pd.concat([
-    pd.read_csv("03_processing/03_map_original_f2s//f2_plate_positions.csv"),
-    pd.read_csv("03_processing/03_map_original_f2s//parents_plate_positions.csv")
+    pd.read_csv("03_processing/03_map_original_f2s/f2_plate_positions.csv"),
+    pd.read_csv("03_processing/03_map_original_f2s/parents_plate_positions.csv")
 ])
 
 # Subset the dataframe to return only those samples repeated in the mix plate

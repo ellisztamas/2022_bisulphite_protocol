@@ -4,7 +4,7 @@
 
 #SBATCH --job-name=mC_windows_originals
 #SBATCH --qos=medium
-#SBATCH --time=1-00:00:00
+#SBATCH --time=2-00:00:00
 #SBATCH --mem=20gb
 #SBATCH --output=slurm/mC_windows_originals.%a.out
 #SBATCH --error=slurm/mC_windows_originals.%a.err

@@ -18,7 +18,7 @@
 #SBATCH --cpus-per-task=5
 #SBATCH --mem-per-cpu=5G
 #SBATCH --qos=medium
-#SBATCH --array=1-8 # Start at 1, because the sample sheet has a header row
+#SBATCH --array=5-8 # Start at 1, because the sample sheet has a header row
 #SBATCH --output=slurm/map_tn5-%a.out
 #SBATCH --error=slurm/map_tn5-%a.err
 

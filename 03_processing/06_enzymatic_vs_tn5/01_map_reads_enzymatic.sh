@@ -33,7 +33,7 @@ scratch=/scratch-cbe/users/$(whoami)/13_enzymatic_vs_tn5
 outdir=03_processing/06_enzymatic_vs_tn5/output
 
 # Sample sheet giving sample name and paths to the two fastq files
-sample_sheet=03_processing/05_enzymatic_vs_tn5/em_sample_sheet.csv
+sample_sheet=03_processing/06_enzymatic_vs_tn5/em_sample_sheet.csv
 # Get the sample name
 sample_names=$(cut -d',' -f1 $sample_sheet)
 sample_names=($sample_names)
@@ -47,6 +47,8 @@ read2_col=($read2_col)
 genome_col=$(cut -d',' -f4 $sample_sheet)
 genome_col=($genome_col)
 
+methylation_extractor_args="--cytosine_report --CX_context --no_header --no_overlap --comprehensive --gzip --scaffolds"
+
 02_library/bash/bismark_pipeline.sh \
     --sample "${sample_names[$SLURM_ARRAY_TASK_ID]}" \
     --read1  "${read1_col[$SLURM_ARRAY_TASK_ID]}" \
@@ -55,5 +57,5 @@ genome_col=($genome_col)
     --work $scratch \
     --outdir $outdir \
     --trim_galore_args "--clip_r1 15 --clip_r2 15 --three_prime_clip_R1 9 --three_prime_clip_R2 9 --cores 4" \
-    --bismark_args "--local --strandID"
-
+    --bismark_args "--local --strandID" \
+    --methylation_extractor_args "${methylation_extractor_args}"
